@@ -51,9 +51,6 @@ ynh_secure_remove --file="$final_path"
 #=================================================
 ynh_script_progression --message="Removing nginx web server configuration..." --weight=1
 
-# Delete logrotate
-ynh_remove_logrotate
-
 ynh_remove_nginx_config
 ynh_systemd_action --action=reload --service_name=nginx
 
