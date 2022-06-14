@@ -31,8 +31,6 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
 token_telegram=$YNH_APP_ARG_TOKEN_TELEGRAM
-user_github=$YNH_APP_ARG_USER_GITHUB
-token_github=$YNH_APP_ARG_TOKEN_GITHUB
 
 # Final path is the classic name for "where we will put the source of the app"
 final_path=/var/www/$app
@@ -57,8 +55,6 @@ ynh_script_progression --message="Storing installation settings..." --weight=1
 ynh_app_setting_set $app domain $domain
 ynh_app_setting_set $app path $path
 ynh_app_setting_set $app token_telegram $token_telegram
-ynh_app_setting_set $app user_github $user_github
-ynh_app_setting_set $app token_github $token_github
 
 # Create system user dedicace for this app
 ynh_system_user_create $app
@@ -84,8 +80,6 @@ sudo pip3 install emoji
 sudo cp ../conf/config.py $final_path
 sudo cp ../conf/chatbot.py $final_path
 sudo sed -i "s@__TOKEN_TELEGRAM__@${token_telegram}@g" "${final_path}/config.py"
-sudo sed -i "s@__USER_GITHUB__@${user_github}@g" "${final_path}/config.py"
-sudo sed -i "s@__TOKEN_GITHUB__@${token_github}@g" "${final_path}/config.py"
 
 # Set permissions spip directory
 sudo chown -R $app: $final_path
