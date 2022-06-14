@@ -44,7 +44,6 @@
             },
             {
                 "name": "token_telegram",
-                "type": "id",
                 "ask": {
                     "en": "Token Telegram",
                     "fr": "Token Telegram"
@@ -59,7 +58,6 @@
             },
             {
                 "name": "token_github",
-                "type": "id",
                 "ask": {
                     "en": "Token API Github",
                     "fr": "Token de l'API Github"
