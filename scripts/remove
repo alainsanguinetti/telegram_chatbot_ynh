@@ -1,18 +1,26 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -u
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# Loads the generic functions usually used in the script
-source _common
-# Source app helpers
 source /usr/share/yunohost/helpers
 
-# Get multi-instances specific variables
-app=$YNH_APP_INSTANCE_NAME
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
-# Retrieve app settings
+app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get "$app" domain)
+final_path=$(ynh_app_setting_get "$app" final_path)
+
+#=================================================
+# REMOVE THE MAIN DIR OF THE APP
+#=================================================
+ynh_script_progression --message="Removing app main directory..." --weight=1
 
 # Stop telegram.chatbot service
 if [ -e "/etc/systemd/system/${app}.service" ]; then
@@ -35,14 +43,19 @@ ynh_secure_remove "/var/log/${app}"
 # Remove user
 ynh_system_user_delete $app
 
-# Delete nginx config
-ynh_remove_nginx_config
+# Remove sources
+ynh_secure_remove --file="$final_path"
+
+#=================================================
+# REMOVE THE NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Removing nginx web server configuration..." --weight=1
 
 # Delete logrotate
 ynh_remove_logrotate
 
-# Reload Nginx and regenerate SSOwat conf
-sudo service nginx reload
+ynh_remove_nginx_config
+ynh_systemd_action --action=reload --service_name=nginx
 
+ynh_script_progression --message="Removal of $app completed" --last
 
-echo -e "\e[0m"	# Restore normal color
