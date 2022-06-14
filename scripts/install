@@ -29,10 +29,6 @@ ynh_clean_setup () {
 
 app=$YNH_APP_INSTANCE_NAME
 domain=$YNH_APP_ARG_DOMAIN
-path_url=$YNH_APP_ARG_PATH
-is_public=$YNH_APP_ARG_IS_PUBLIC
-
-domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
 token_telegram=$YNH_APP_ARG_TOKEN_TELEGRAM
 user_github=$YNH_APP_ARG_USER_GITHUB
@@ -57,8 +53,6 @@ test ! -e "$final_path" || ynh_die "$final_path already exists, aborting"
 #=================================================
 
 ynh_script_progression --message="Storing installation settings..." --weight=1
-
-source _common	# Loads the generic functions usually used in the script
 
 ynh_app_setting_set $app domain $domain
 ynh_app_setting_set $app path $path
