@@ -9,12 +9,12 @@
         "en": "Telegram chatbot - mini chatbot for Telegram",
         "fr": "Telegram chatbot - petit chatbot pour Telegram"
     },
-    "version": "0.0.3",
+    "version": "0.0.4",
     "license": "GNU v3.0",
     "maintainer": {
-        "name": "cyp",
-        "email": "cyp@rouquin.me",
-        "url": "http://www.rouquin.me"
+        "name": "alain",
+        "email": "alain@sanguinetti.eu",
+        "url": "http://sanguinetti.eu"
     },
     "multi_instance": false,
     "url": "https://github.com/magikcypress",
