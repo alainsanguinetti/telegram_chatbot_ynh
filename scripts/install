@@ -46,10 +46,6 @@ final_path=/var/www/$app
 #=================================================
 ynh_script_progression --message="Validating installation parameters..." --weight=1
 
-CHECK_VAR "$app" "app name not set"
-CHECK_DOMAINPATH
-CHECK_FINALPATH
-
 # Check final_path availability
 test ! -e "$final_path" || ynh_die "$final_path already exists, aborting"
 
@@ -128,8 +124,6 @@ ynh_script_progression --message="Configuring nginx web server..." --weight=1
 # Create a dedicated nginx config
 ynh_add_nginx_config
 
-# Add logrotate
-ynh_use_logrotate
 
 #=================================================
 # RELOAD NGINX
