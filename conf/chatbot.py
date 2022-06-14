@@ -17,14 +17,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-# Filter compare YunoHost Apps
-class FilterStar(BaseFilter):
-	def filter(self, message):
-		return 'ynh' in message.text
-
-# Remember to initialize the class.
-filter_star = FilterStar()
-
 def start(bot, update):
 	logger.info("start")
 
@@ -49,38 +41,6 @@ def biere(bot, update):
 	logger.info("Biere de %s: %s" % (user.first_name, update.message.text))
 	bot.sendMessage(chat_id=update.message.chat_id, text="A la votre !")
 
-def star(bot, update):
-
-	message = update.message.text
-	mylist = message.split(" ")
-	nameapp1 = mylist[1]
-	nameapp2 = mylist[2]
-	score_result = []
-
-	for name in mylist[1:]:
-		user_agent = {'user-agent': 'Telegram-bot/0.0.1 (Windows NT 6.3; rv:36.0)'}
-		http = urllib3.PoolManager(10, headers=user_agent, cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
-		url_github = 'https://' + config.user_github + ':' + config.token_github + '@api.github.com/repos/YunoHost-Apps/' + name + '_ynh'
-		app = http.urlopen('GET', url_github)
-		japp = json.loads(app.data.decode('utf-8'))
-		if ('stargazers_count' in japp):
-			score = japp['stargazers_count']
-			score_result.append(score)
-
-	if len(score_result) == 2:
-		if (score_result[0] == score_result[1]):
-			result = emojize("{0} ({2}) est égale à {1} ({3}) :thumbsup:".format(nameapp1, nameapp2, score_result[0], score_result[1]), use_aliases=True)
-		elif (score_result[0] > score_result[1]):
-			result = emojize("{0} ({2}) :thumbsup: est mieux que {1} ({3}) :thumbsdown:".format(nameapp1, nameapp2, score_result[0], score_result[1]), use_aliases=True)
-		else:
-			result = emojize("{1} ({2}) :thumbsdown: est moins bien que {0} ({3}) :thumbsup:".format(nameapp2, nameapp1, score_result[0], score_result[1]), use_aliases=True)
-	else:
-		result = emojize("Une ou les deux applications n'ont pas été trouvées :confused:", use_aliases=True)
-
-	if result:
-		bot.sendMessage(chat_id=update.message.chat_id, text=result)
-
-
 def error(bot, update, error):
 	logger.warn('Update "%s" caused error "%s"' % (update, error))
 
@@ -99,11 +59,11 @@ def main():
 	dp.add_handler(RegexHandler('^.*(?i)(coucou|salut|bonjour|yop|hello).*$', bonjour))
 	dp.add_handler(RegexHandler('^.*(?i)(mer(.*)ci|ci(.*)mer).*$', merci))
 	dp.add_handler(RegexHandler('^.*(?i)bière.*$', biere))
-	dp.add_handler(MessageHandler(filter_star, star))
+	# dp.add_handler(MessageHandler(filter_star, star))
 	# dp.add_handler(RegexHandler('^\/view(\d+).*', view.item, pass_groups=True))
 
 	# on noncommand i.e message - echo the message on Telegram
-	# dp.add_handler(MessageHandler(Filters.text, echo))
+	dp.add_handler(MessageHandler(Filters.text, echo))
 
 	# log all errors
 	dp.add_error_handler(error)
