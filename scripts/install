@@ -78,7 +78,6 @@ sudo pip3 install certifi
 sudo pip3 install urllib3[secure]
 sudo pip3 install PySocks
 sudo pip3 install emoji
-sudo pip3 install shutil
 sudo pip3 install facebook_scraper
 
 ynh_script_progression --message="Create files..." --weight=1
