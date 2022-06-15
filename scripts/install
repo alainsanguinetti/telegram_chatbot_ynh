@@ -68,6 +68,8 @@ ynh_script_progression --message="Setting up source files..." --weight=1
 sudo mkdir "$final_path"
 ynh_app_setting_set $app final_path $final_path
 
+ynh_script_progression --message="Install python packages..." --weight=1
+
 ynh_package_install python3-pip
 
 # Install de library Python
@@ -76,10 +78,15 @@ sudo pip3 install certifi
 sudo pip3 install urllib3[secure]
 sudo pip3 install PySocks
 sudo pip3 install emoji
+sudo pip3 install shutil
+sudo pip3 install facebook_scraper
+
+ynh_script_progression --message="Create files..." --weight=1
 
 sudo cp ../conf/config.py $final_path
 sudo cp ../conf/chatbot.py $final_path
 sudo sed -i "s@__TOKEN_TELEGRAM__@${token_telegram}@g" "${final_path}/config.py"
+sudo touch ${final_path}/fbpages.csv
 
 # Set permissions spip directory
 sudo chown -R $app: $final_path
